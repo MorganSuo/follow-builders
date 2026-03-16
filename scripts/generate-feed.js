@@ -27,8 +27,8 @@ import { join } from 'path';
 const SUPADATA_BASE = 'https://api.supadata.ai/v1';
 const X_API_BASE = 'https://api.x.com/2';
 
-// How far back to look for content (24 hours for daily feed)
-const LOOKBACK_HOURS = 48;
+// How far back to look for content
+const LOOKBACK_HOURS = 24;
 
 // -- Load Sources ------------------------------------------------------------
 
