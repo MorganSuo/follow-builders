@@ -1,0 +1,51 @@
+name: Daily Digest
+
+on:
+  schedule:
+    # ~8-9am Pacific (UTC-8 in winter, UTC-7 in summer)
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: scripts
+        run: npm ci
+
+      - name: Create config
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
+        run: |
+          mkdir -p ~/.follow-builders
+          echo "TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}" > ~/.follow-builders/.env
+          echo "MINIMAX_API_KEY=${MINIMAX_API_KEY}" >> ~/.follow-builders/.env
+          cat > ~/.follow-builders/config.json << 'EOF'
+          {
+            "platform": "other",
+            "language": "bilingual",
+            "timezone": "America/Los_Angeles",
+            "frequency": "daily",
+            "deliveryTime": "08:00",
+            "delivery": {
+              "method": "telegram",
+              "chatId": "6477831163"
+            },
+            "onboardingComplete": true
+          }
+          EOF
+
+      - name: Run digest pipeline
+        working-directory: scripts
+        run: node prepare-digest.js | node remix-digest.js > /tmp/fb-digest.txt && node deliver.js --file /tmp/fb-digest.txt
