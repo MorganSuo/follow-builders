@@ -127,6 +127,7 @@ async function sendTelegram(text, botToken, chatId) {
 // Sends the digest via Resend's email API.
 // The user provides their own Resend API key and email address.
 async function sendEmail(text, apiKey, toEmail) {
+  const recipients = Array.isArray(toEmail) ? toEmail : [toEmail];
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -134,8 +135,8 @@ async function sendEmail(text, apiKey, toEmail) {
       'Authorization': `Bearer ${apiKey}`
     },
     body: JSON.stringify({
-      from: 'AI Builders Digest <digest@resend.dev>',
-      to: [toEmail],
+      from: 'AI Builders Digest <digest@minimaxi.com>',
+      to: recipients,
       subject: `AI Builders Digest — ${new Date().toLocaleDateString('en-US', {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
       })}`,
