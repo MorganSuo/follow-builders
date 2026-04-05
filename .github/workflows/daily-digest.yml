@@ -25,12 +25,12 @@ jobs:
 
       - name: Create config
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           mkdir -p ~/.follow-builders
-          echo "TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}" > ~/.follow-builders/.env
-          echo "MINIMAX_API_KEY=${MINIMAX_API_KEY}" >> ~/.follow-builders/.env
+          echo "MINIMAX_API_KEY=${MINIMAX_API_KEY}" > ~/.follow-builders/.env
+          echo "RESEND_API_KEY=${RESEND_API_KEY}" >> ~/.follow-builders/.env
           cat > ~/.follow-builders/config.json << 'EOF'
           {
             "platform": "other",
@@ -39,8 +39,8 @@ jobs:
             "frequency": "daily",
             "deliveryTime": "08:00",
             "delivery": {
-              "method": "telegram",
-              "chatId": "6477831163"
+              "method": "email",
+              "email": "morgan@minimaxi.com"
             },
             "onboardingComplete": true
           }
