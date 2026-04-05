@@ -40,7 +40,7 @@ jobs:
             "deliveryTime": "08:00",
             "delivery": {
               "method": "email",
-              "email": "morgan@minimaxi.com"
+              "email": "morsuo@gmail.com"
             },
             "onboardingComplete": true
           }
