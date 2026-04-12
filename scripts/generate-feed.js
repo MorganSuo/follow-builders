@@ -700,12 +700,10 @@ async function main() {
   const pod2txtKey = process.env.POD2TXT_API_KEY;
 
   if (runPodcasts && !pod2txtKey) {
-    console.error('POD2TXT_API_KEY not set');
-    process.exit(1);
+    console.error('POD2TXT_API_KEY not set — skipping podcasts');
   }
   if (runTweets && !xBearerToken) {
-    console.error('X_BEARER_TOKEN not set');
-    process.exit(1);
+    console.error('X_BEARER_TOKEN not set — skipping tweets');
   }
 
   const sources = await loadSources();
@@ -713,7 +711,7 @@ async function main() {
   const errors = [];
 
   // Fetch tweets
-  if (runTweets) {
+  if (runTweets && xBearerToken) {
     console.error('Fetching X/Twitter content...');
     const xContent = await fetchXContent(sources.x_accounts, xBearerToken, state, errors);
     console.error(`  Found ${xContent.length} builders with new tweets`);
@@ -732,7 +730,7 @@ async function main() {
   }
 
   // Fetch podcasts
-  if (runPodcasts) {
+  if (runPodcasts && pod2txtKey) {
     console.error('Fetching podcast content (RSS + pod2txt)...');
     const podcasts = await fetchPodcastContent(sources.podcasts, pod2txtKey, state, errors);
     console.error(`  Found ${podcasts.length} new episodes`);
