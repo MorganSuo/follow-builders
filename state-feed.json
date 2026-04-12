@@ -3,6 +3,10 @@
   "seenVideos": {},
   "seenArticles": {
     "https://www.anthropic.com/engineering/managed-agents": 1775968029627,
-    "https://claude.com/blog/claude-managed-agents": 1775968030442
+    "https://claude.com/blog/claude-managed-agents": 1775968030442,
+    "https://www.anthropic.com/engineering/infrastructure-noise": 1775978002229,
+    "https://www.anthropic.com/engineering/claude-code-auto-mode": 1775978003409,
+    "https://claude.com/blog/harnessing-claudes-intelligence": 1775978004065,
+    "https://claude.com/blog/claude-builds-visuals": 1775978004618
   }
 }
