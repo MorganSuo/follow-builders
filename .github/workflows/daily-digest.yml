@@ -26,11 +26,11 @@ jobs:
       - name: Create config
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          LARK_WEBHOOK_URL: ${{ secrets.LARK_WEBHOOK_URL }}
         run: |
           mkdir -p ~/.follow-builders
           echo "DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}" > ~/.follow-builders/.env
-          echo "RESEND_API_KEY=${RESEND_API_KEY}" >> ~/.follow-builders/.env
+          echo "LARK_WEBHOOK_URL=${LARK_WEBHOOK_URL}" >> ~/.follow-builders/.env
           cat > ~/.follow-builders/config.json << 'EOF'
           {
             "platform": "other",
@@ -39,8 +39,7 @@ jobs:
             "frequency": "daily",
             "deliveryTime": "08:00",
             "delivery": {
-              "method": "email",
-              "email": "morsuo@gmail.com"
+              "method": "lark"
             },
             "onboardingComplete": true
           }
