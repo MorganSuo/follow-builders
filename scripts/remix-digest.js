@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // remix-digest.js
-// Reads raw JSON from prepare-digest.js, calls MiniMax M2.7 (Anthropic-compatible API)
+// Reads raw JSON from prepare-digest.js, calls Deepseek (OpenAI-compatible API)
 // to remix into a bilingual digest, outputs the final text.
 //
 // Usage: node prepare-digest.js | node remix-digest.js > digest.txt
 //        node remix-digest.js --file /tmp/fb-raw.json > digest.txt
 
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 import { config } from "dotenv";
@@ -14,15 +14,15 @@ import { config } from "dotenv";
 // Load .env from ~/.follow-builders/
 config({ path: resolve(process.env.HOME, ".follow-builders", ".env") });
 
-const API_KEY = process.env.MINIMAX_API_KEY;
+const API_KEY = process.env.DEEPSEEK_API_KEY;
 if (!API_KEY) {
-  console.error("Error: MINIMAX_API_KEY not set in ~/.follow-builders/.env");
+  console.error("Error: DEEPSEEK_API_KEY not set in ~/.follow-builders/.env");
   process.exit(1);
 }
 
-const client = new Anthropic({
+const client = new OpenAI({
   apiKey: API_KEY,
-  baseURL: "https://api.minimax.io/anthropic",
+  baseURL: "https://api.deepseek.com",
 });
 
 async function readInput() {
@@ -140,23 +140,16 @@ IMPORTANT RULES:
 
 ${contentSections.join("\n\n---\n\n")}`;
 
-  const message = await client.messages.create({
-    model: "MiniMax-M2.7",
+  const message = await client.chat.completions.create({
+    model: "deepseek-chat",
     max_tokens: 8000,
-    system: systemPrompt,
     messages: [
-      {
-        role: "user",
-        content: userPrompt,
-      },
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userPrompt },
     ],
   });
 
-  // Extract text from response
-  const digest = message.content
-    .filter((block) => block.type === "text")
-    .map((block) => block.text)
-    .join("\n");
+  const digest = message.choices[0].message.content;
 
   console.log(digest);
 }

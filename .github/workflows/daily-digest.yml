@@ -25,11 +25,11 @@ jobs:
 
       - name: Create config
         env:
-          MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           mkdir -p ~/.follow-builders
-          echo "MINIMAX_API_KEY=${MINIMAX_API_KEY}" > ~/.follow-builders/.env
+          echo "DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}" > ~/.follow-builders/.env
           echo "RESEND_API_KEY=${RESEND_API_KEY}" >> ~/.follow-builders/.env
           cat > ~/.follow-builders/config.json << 'EOF'
           {
